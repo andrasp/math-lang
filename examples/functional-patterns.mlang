@@ -1,0 +1,230 @@
+# Functional Programming Patterns
+# Elegant list processing with MathLang
+
+# ============================================
+# Map: Transform Every Element
+# ============================================
+
+numbers = Range(1, 11)
+numbers
+
+# Square each number
+Map(numbers, x -> x^2)
+
+# Double each number
+Map(numbers, x -> x * 2)
+
+# Apply a function
+Map(numbers, x -> Sqrt(x))
+
+# String transformation
+words = List("hello", "world", "mathlang")
+Map(words, s -> ToUpper(s))
+
+# ============================================
+# Filter: Select Elements
+# ============================================
+
+# Keep only even numbers
+Filter(numbers, x -> x % 2 == 0)
+
+# Keep only odd numbers
+Filter(numbers, x -> x % 2 != 0)
+
+# Keep numbers greater than 5
+Filter(numbers, x -> x > 5)
+
+# Keep primes
+Filter(Range(2, 51), n -> IsPrime(n))
+
+# ============================================
+# Reduce: Combine Into One Value
+# ============================================
+
+# Sum all numbers
+Reduce(numbers, (acc, x) -> acc + x, 0)
+
+# Same as Sum()
+Sum(numbers)
+
+# Product of all numbers
+Reduce(numbers, (acc, x) -> acc * x, 1)
+
+# Find maximum using reduce
+Reduce(numbers, (acc, x) -> If(x > acc, x, acc), 0)
+
+# Max() takes individual args: Max(1, 5, 3) = 5
+Max(1, 5, 3)
+
+# Concatenate strings
+Reduce(List("a", "b", "c", "d"), (acc, s) -> Concat(acc, s), "")
+
+# ============================================
+# Chaining Operations
+# ============================================
+
+# Pipeline: take numbers, filter evens, square them, sum
+data = Range(1, 21)
+
+evens = Filter(data, x -> x % 2 == 0)
+squared = Map(evens, x -> x^2)
+total = Sum(squared)
+
+evens
+squared
+total
+
+# Or nest the operations
+Sum(Map(Filter(Range(1, 21), x -> x % 2 == 0), x -> x^2))
+
+# ============================================
+# Working with Indices
+# ============================================
+
+# Map with index-like behavior using Range
+items = List("a", "b", "c", "d", "e")
+Length(items)
+
+# Access by index
+items[0]
+items[2]
+items[4]
+
+# Access elements with index
+Map(Range(0, Length(items)), i -> items[i])
+
+# ============================================
+# Nested Structures
+# ============================================
+
+# Map over nested data
+matrix_row1 = List(1, 2, 3)
+matrix_row2 = List(4, 5, 6)
+matrix_row3 = List(7, 8, 9)
+
+# Sum each row
+Sum(matrix_row1)
+Sum(matrix_row2)
+Sum(matrix_row3)
+
+# ============================================
+# Generating Data
+# ============================================
+
+# Range with step
+Range(0, 10, 2)   # 0, 2, 4, 6, 8
+Range(10, 0, -2)  # 10, 8, 6, 4, 2
+
+# Generate sequences
+squares = Map(Range(1, 11), x -> x^2)
+cubes = Map(Range(1, 11), x -> x^3)
+powers_of_2 = Map(Range(0, 11), x -> 2^x)
+
+squares
+cubes
+powers_of_2
+
+# ============================================
+# List Operations
+# ============================================
+
+data = List(5, 2, 8, 1, 9, 3, 7, 4, 6)
+
+# First and last
+First(data)
+Last(data)
+
+# Take and skip
+Take(data, 3)   # First 3 elements
+Skip(data, 3)   # Everything after first 3
+
+# Combine
+Take(Skip(data, 2), 4)  # Elements 3-6
+
+# Length
+Length(data)
+
+# ============================================
+# Aggregation Functions
+# ============================================
+
+scores = List(85, 92, 78, 96, 88, 73, 91)
+
+Sum(scores)
+Avg(scores)    # Same as Mean
+
+# For list min/max, use Reduce
+Reduce(scores, (a, b) -> If(a < b, a, b), scores[0])  # Min
+Reduce(scores, (a, b) -> If(a > b, a, b), scores[0])  # Max
+
+# Count elements matching a condition
+Length(Filter(scores, s -> s >= 90))  # Count of A grades
+
+# ============================================
+# Function Composition
+# ============================================
+
+# Define reusable transformations
+double(x) = x * 2
+square(x) = x^2
+increment(x) = x + 1
+
+# Apply in sequence
+Map(Map(Map(Range(1, 6), increment), double), square)
+
+# More readable with intermediate variables
+step1 = Range(1, 6)
+step2 = Map(step1, increment)   # 2, 3, 4, 5, 6
+step3 = Map(step2, double)      # 4, 6, 8, 10, 12
+step4 = Map(step3, square)      # 16, 36, 64, 100, 144
+
+step1
+step2
+step3
+step4
+
+# ============================================
+# Practical Examples
+# ============================================
+
+# Calculate sum of squares of even numbers from 1 to 100
+Sum(Map(Filter(Range(1, 101), x -> x % 2 == 0), x -> x^2))
+
+# Find which numbers 1-100 are perfect squares
+Filter(Range(1, 101), n -> Sqrt(n) == Floor(Sqrt(n)))
+
+# Generate perfect squares under 1000
+Map(Range(1, 32), n -> n^2)
+
+# ============================================
+# Lazy Evaluation with Intervals
+# ============================================
+
+# Range creates an Interval (lazy)
+big_range = Range(1, 1000001)
+
+# Operations on it are efficient
+First(big_range)
+Last(big_range)
+
+# Only materializes what's needed
+Sum(Take(big_range, 100))
+
+# ============================================
+# Boolean Logic on Lists
+# ============================================
+
+# Check if any element satisfies condition
+any_over_90 = Length(Filter(scores, s -> s > 90)) > 0
+any_over_90
+
+# Check if all elements satisfy condition
+all_passing = Length(Filter(scores, s -> s >= 60)) == Length(scores)
+all_passing
+
+# Count by condition
+passing_count = Length(Filter(scores, s -> s >= 70))
+failing_count = Length(Filter(scores, s -> s < 70))
+
+passing_count
+failing_count

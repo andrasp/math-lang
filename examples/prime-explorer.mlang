@@ -1,0 +1,123 @@
+# Prime Number Exploration
+# Discovering patterns in the primes
+
+# ============================================
+# Generating Primes
+# ============================================
+
+# Get all primes up to 100
+primes_to_100 = Primes(100)
+primes_to_100
+
+# How many primes under 100?
+Length(primes_to_100)
+
+# How many primes under 1000?
+Length(Primes(1000))
+
+# ============================================
+# Testing Primality
+# ============================================
+
+IsPrime(17)
+IsPrime(18)
+IsPrime(97)
+IsPrime(91)  # Tricky: 91 = 7 * 13
+
+# Large prime check
+IsPrime(104729)  # The 10,000th prime
+
+# ============================================
+# Prime Factorization
+# ============================================
+
+PrimeFactors(60)    # 2, 2, 3, 5
+PrimeFactors(100)   # 2, 2, 5, 5
+PrimeFactors(97)    # Just 97 (it's prime)
+PrimeFactors(2310)  # 2, 3, 5, 7, 11 (primorial)
+
+# ============================================
+# Twin Primes
+# ============================================
+
+# Twin primes are pairs differing by 2: (3,5), (5,7), (11,13), ...
+primes = Primes(100)
+
+# Find twin prime pairs by checking which primes have prime+2 also prime
+twins_first = Filter(primes, p -> IsPrime(p + 2))
+twins_first
+
+# ============================================
+# Prime Gaps
+# ============================================
+
+# The gap between consecutive primes
+primes_50 = Primes(50)
+gaps = Map(Range(1, Length(primes_50) - 1), i -> primes_50[i] - primes_50[i - 1])
+gaps
+
+# Average gap
+Mean(gaps)
+
+# Largest gap in first 50
+Reduce(gaps, (a, b) -> If(a > b, a, b), 0)
+
+# ============================================
+# Prime Density
+# ============================================
+
+# How does prime density decrease as numbers get larger?
+# Count primes in ranges
+
+count_to_100 = Length(Primes(100))
+count_to_500 = Length(Primes(500))
+count_to_1000 = Length(Primes(1000))
+
+# Density (primes per number)
+density_100 = count_to_100 / 100
+density_500 = count_to_500 / 500
+density_1000 = count_to_1000 / 1000
+
+density_100
+density_500
+density_1000
+
+# Prime Number Theorem: density ~ 1/ln(n)
+1 / Log(100)
+1 / Log(500)
+1 / Log(1000)
+
+# ============================================
+# Interesting Prime Patterns
+# ============================================
+
+# Mersenne numbers: 2^n - 1 (some are prime)
+mersenne(n) = 2^n - 1
+
+mersenne(2)   # 3 - prime
+mersenne(3)   # 7 - prime
+mersenne(5)   # 31 - prime
+mersenne(7)   # 127 - prime
+
+IsPrime(mersenne(2))
+IsPrime(mersenne(3))
+IsPrime(mersenne(5))
+IsPrime(mersenne(7))
+IsPrime(mersenne(11))  # 2047 = 23 * 89, not prime!
+
+# ============================================
+# Sum of Primes
+# ============================================
+
+# Sum of first n primes
+Sum(Take(Primes(100), 10))   # First 10 primes
+Sum(Take(Primes(1000), 100)) # First 100 primes
+
+# ============================================
+# Visualizing Prime Distribution
+# ============================================
+
+# Histogram of prime gaps
+primes_500 = Primes(500)
+prime_gaps = Map(Range(1, Length(primes_500) - 1), i -> primes_500[i] - primes_500[i - 1])
+Histogram(prime_gaps, 10)

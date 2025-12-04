@@ -1,0 +1,165 @@
+# Projectile Motion
+# Classical physics with MathLang
+
+# ============================================
+# Constants
+# ============================================
+
+g = 9.81  # Acceleration due to gravity (m/s^2)
+
+# ============================================
+# Basic Projectile Equations
+# ============================================
+
+# Position at time t, given initial velocity v0 and angle theta
+# x(t) = v0 * cos(theta) * t
+# y(t) = v0 * sin(theta) * t - 0.5 * g * t^2
+
+v0 = 50        # Initial velocity (m/s)
+theta = 45     # Launch angle (degrees)
+theta_rad = ToRadians(theta)
+
+# Horizontal and vertical components
+vx = v0 * Cos(theta_rad)
+vy = v0 * Sin(theta_rad)
+
+vx
+vy
+
+# Position functions
+x(t) = vx * t
+y(t) = vy * t - 0.5 * g * t^2
+
+# ============================================
+# Time of Flight
+# ============================================
+
+# When does the projectile land? Solve y(t) = 0
+# t * (vy - 0.5 * g * t) = 0
+# t = 0 or t = 2 * vy / g
+
+time_of_flight = 2 * vy / g
+time_of_flight
+
+# ============================================
+# Maximum Height
+# ============================================
+
+# Occurs when vertical velocity = 0
+# vy - g * t = 0 => t = vy / g
+
+time_to_peak = vy / g
+time_to_peak
+
+max_height = y(time_to_peak)
+max_height
+
+# Formula: h_max = v0^2 * sin^2(theta) / (2g)
+v0^2 * Sin(theta_rad)^2 / (2 * g)
+
+# ============================================
+# Range
+# ============================================
+
+range = x(time_of_flight)
+range
+
+# Formula: R = v0^2 * sin(2*theta) / g
+v0^2 * Sin(2 * theta_rad) / g
+
+# ============================================
+# The 45-Degree Rule
+# ============================================
+
+# Maximum range occurs at 45 degrees
+# Let's verify by computing range at different angles
+
+range_at_angle(angle_deg) = v0^2 * Sin(2 * ToRadians(angle_deg)) / g
+
+range_at_angle(30)
+range_at_angle(45)
+range_at_angle(60)
+range_at_angle(75)
+
+# 45 degrees gives the maximum!
+
+# ============================================
+# Complementary Angles
+# ============================================
+
+# Angles that add to 90 give the same range
+range_at_angle(30)
+range_at_angle(60)  # Same range!
+
+range_at_angle(20)
+range_at_angle(70)  # Same range!
+
+# ============================================
+# Trajectory Visualization
+# ============================================
+
+# Plot height vs distance for 45-degree launch
+# Parametric: as t varies, plot (x(t), y(t))
+# We can use x as parameter since x = vx*t => t = x/vx
+
+trajectory(x_pos) = vy * (x_pos / vx) - 0.5 * g * (x_pos / vx)^2
+
+Plot(trajectory, 0, range)
+
+# ============================================
+# Comparing Trajectories
+# ============================================
+
+# Three different angles, same initial speed
+v = 30
+
+traj_30(x) = x * Tan(ToRadians(30)) - g * x^2 / (2 * v^2 * Cos(ToRadians(30))^2)
+traj_45(x) = x * Tan(ToRadians(45)) - g * x^2 / (2 * v^2 * Cos(ToRadians(45))^2)
+traj_60(x) = x * Tan(ToRadians(60)) - g * x^2 / (2 * v^2 * Cos(ToRadians(60))^2)
+
+range_30 = v^2 * Sin(2 * ToRadians(30)) / g
+range_45 = v^2 * Sin(2 * ToRadians(45)) / g
+range_60 = v^2 * Sin(2 * ToRadians(60)) / g
+
+range_30
+range_45
+range_60
+
+# Plot one trajectory
+Plot(traj_45, 0, range_45)
+
+# ============================================
+# Energy Conservation
+# ============================================
+
+# Total mechanical energy is conserved
+# KE = 0.5 * m * v^2
+# PE = m * g * h
+# We can work per unit mass (m=1)
+
+mass = 1
+initial_KE = 0.5 * mass * v0^2
+initial_PE = 0  # Starting at ground level
+total_energy = initial_KE + initial_PE
+
+# At maximum height
+KE_at_peak = 0.5 * mass * vx^2  # Only horizontal velocity remains
+PE_at_peak = mass * g * max_height
+total_at_peak = KE_at_peak + PE_at_peak
+
+total_energy
+total_at_peak  # Same!
+
+# ============================================
+# Impact Velocity
+# ============================================
+
+# By symmetry (or energy conservation), impact speed equals launch speed
+impact_speed = Sqrt(vx^2 + vy^2)
+impact_speed
+v0  # Same!
+
+# Impact angle (below horizontal) equals launch angle
+impact_angle = ToDegrees(ArcTan(vy / vx))
+impact_angle
+theta  # Same!
