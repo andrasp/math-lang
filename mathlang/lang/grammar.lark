@@ -1,0 +1,110 @@
+// MathLang Grammar
+
+// Program structure - sequence of statements, each followed by separator
+// Allows empty statements (just newlines/semicolons) and optional trailing separator
+program: (_line)* [_stmt]
+
+_line: _stmt _SEP
+     | _SEP
+
+// Order matters for LALR parsing
+// expression_stmt must come last as it's the most general
+_stmt: assignment
+     | func_def
+     | expression_stmt
+
+_SEP: (";" | NEWLINE)+
+
+assignment: IDENTIFIER "=" (lambda_expr | expression)
+
+// Function definition syntax: f(x) = expr, f(x, y) = expr, f() = expr
+// Desugars to assignment of lambda: f = x -> expr
+func_def: IDENTIFIER EMPTY_PARENS "=" expression                -> no_param_func_def
+        | IDENTIFIER "(" IDENTIFIER ")" "=" expression          -> single_param_func_def
+        | IDENTIFIER "(" func_def_params ")" "=" expression     -> multi_param_func_def
+
+func_def_params: IDENTIFIER ("," IDENTIFIER)+
+
+expression_stmt: lambda_expr | expression
+
+// Lambda expressions
+// Use ARROW terminal to avoid conflict with subtraction
+lambda_expr: IDENTIFIER ARROW expression             -> single_param_lambda
+           | EMPTY_PARENS ARROW expression           -> no_param_lambda
+           | "(" param_list ")" ARROW expression     -> multi_param_lambda
+
+param_list: IDENTIFIER ("," IDENTIFIER)+
+
+EMPTY_PARENS: "()"
+ARROW: "->"
+
+// Expressions with operator precedence (lowest to highest)
+?expression: comparison
+
+?comparison: sum
+           | comparison COMP_OP sum        -> binary_op
+
+?sum: product
+    | sum ADD_OP product                   -> binary_op
+
+?product: power
+        | product MUL_OP power             -> binary_op
+
+// Power is right-associative
+?power: unary
+      | unary POWER power                  -> binary_op
+
+POWER: "^"
+
+?unary: atom
+      | MINUS unary                        -> unary_op
+
+MINUS: "-"
+
+?atom: NUMBER                              -> number
+     | COMPLEX                             -> complex_number
+     | STRING                              -> string
+     | named_constant
+     | array_index
+     | func_call
+     | IDENTIFIER                          -> identifier
+     | "(" expression ")"
+
+named_constant: "[[" IDENTIFIER "]]"
+
+array_index: IDENTIFIER "[" expression "]"
+
+func_call: IDENTIFIER EMPTY_PARENS           -> no_arg_func_call
+         | IDENTIFIER "(" func_args ")"
+
+func_args: func_arg ("," func_arg)*
+
+func_arg: lambda_expr | expression
+
+// Operators
+COMP_OP: ">=" | "<=" | "==" | "!=" | ">" | "<"
+ADD_OP: /[+-]/
+MUL_OP: "*" | "/" | "%"
+
+// Terminals
+IDENTIFIER: /[a-zA-Z_][a-zA-Z0-9_]*/
+
+// Numbers: integers, floats, hex, with optional suffixes
+NUMBER: HEX_NUMBER | FLOAT_NUMBER | DEC_NUMBER
+
+HEX_NUMBER: /0x[0-9a-fA-F]+/
+FLOAT_NUMBER: /[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?[fdm]?/ | /[0-9]+[eE][+-]?[0-9]+[fdm]?/
+DEC_NUMBER: /[0-9]+[uUlLfFdDmM]*/
+
+// Complex numbers: 3+2i, 3-2i, 2i, -2i
+COMPLEX: /[+-]?[0-9]+(\.[0-9]+)?\s*[+-]\s*[0-9]+(\.[0-9]+)?[ij]/i
+       | /[+-]?[0-9]+(\.[0-9]+)?[ij]/i
+
+STRING: /"[^"]*"/
+
+// Comments (hash to end of line)
+COMMENT.2: /#[^\n\r]*/
+NEWLINE: /[\r\n]+/
+
+%ignore COMMENT
+%ignore /[ \t]+/
