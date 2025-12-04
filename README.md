@@ -10,7 +10,7 @@ A mathematical expression language with an interactive web playground, CLI, and 
 
 ## About
 
-MathLang is a nostalgia project - a modern rewrite and extension of a language I originally built in 2010 using C# with a Windows desktop frontend. This version reimagines it as a Python-based evaluation engine with a web playground for experimentation and a CLI for scripting.
+MathLang is a nostalgia project - a modern rewrite and extension of a language I originally built in 2010 using C# with a Windows desktop frontend [[screenshot](docs/screenshot-nostalgia.png)]. This version reimagines it as a Python-based evaluation engine with a web playground for experimentation and a CLI for scripting.
 
 This isn't meant to compete with scientific computing tools like MATLAB, Julia, or Python's NumPy. It's nowhere near those. It's a purpose-built DSL that prioritizes readability, immediate feedback, and a gentle learning curve for mathematical exploration.
 
