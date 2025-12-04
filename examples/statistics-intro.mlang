@@ -1,0 +1,155 @@
+# Statistics Introduction
+# Exploring data analysis with MathLang
+
+# ============================================
+# Creating Sample Data
+# ============================================
+
+# A simple dataset
+scores = List(72, 85, 90, 78, 88, 92, 76, 95, 81, 87)
+scores
+
+# ============================================
+# Measures of Central Tendency
+# ============================================
+
+Mean(scores)
+Median(scores)
+Mode(List(1, 2, 2, 3, 3, 3, 4))  # Mode is 3
+
+# ============================================
+# Measures of Spread
+# ============================================
+
+# Range (max - min)
+# Define helper functions for list max/min
+list_max(lst) = Reduce(lst, (a, b) -> If(a > b, a, b), lst[0])
+list_min(lst) = Reduce(lst, (a, b) -> If(a < b, a, b), lst[0])
+
+list_max(scores) - list_min(scores)
+
+# Variance and Standard Deviation
+Variance(scores)      # Sample variance
+StdDev(scores)        # Sample standard deviation
+
+PopVariance(scores)   # Population variance
+PopStdDev(scores)     # Population standard deviation
+
+# Quartiles and IQR
+Quartiles(scores)
+IQR(scores)
+
+# Specific percentiles
+Percentile(scores, 25)  # Q1
+Percentile(scores, 50)  # Median
+Percentile(scores, 75)  # Q3
+Percentile(scores, 90)  # 90th percentile
+
+# ============================================
+# Working with Larger Datasets
+# ============================================
+
+# Generate data: 100 values with some pattern + noise
+data = Map(Range(1, 101), x -> 50 + x * 0.3 + (Random() - 0.5) * 20)
+
+Mean(data)
+StdDev(data)
+Median(data)
+
+# Visualize distribution
+Histogram(data, 15)
+
+# ============================================
+# Correlation
+# ============================================
+
+# Two related variables
+x_vals = Range(1, 21)
+y_vals = Map(x_vals, x -> 2 * x + 3 + (Random() - 0.5) * 5)
+
+# Pearson correlation coefficient (-1 to 1)
+Correlation(x_vals, y_vals)
+
+# Perfectly correlated
+Correlation(Range(1, 11), Range(1, 11))  # r = 1
+
+# Negatively correlated
+Correlation(Range(1, 11), Map(Range(1, 11), x -> 11 - x))  # r = -1
+
+# Uncorrelated
+Correlation(List(1, 2, 3, 4, 5), List(3, 1, 4, 1, 5))
+
+# ============================================
+# Linear Regression
+# ============================================
+
+# Fit a line: y = mx + b
+x_data = Map(Range(1, 11), x -> x)
+y_data = Map(Range(1, 11), x -> 2.5 * x + 10 + (Random() - 0.5) * 3)
+
+# Returns [slope, intercept, r_squared]
+regression = LinearRegression(x_data, y_data)
+regression
+
+slope = regression[0]
+intercept = regression[1]
+r_squared = regression[2]
+
+# Predictions using the model
+predict(x) = slope * x + intercept
+predict(5)
+predict(15)
+
+# Visualize the data
+Scatter(x_data, y_data)
+
+# ============================================
+# Covariance
+# ============================================
+
+# Covariance measures how two variables change together
+Covariance(Range(1, 11), Map(Range(1, 11), x -> x * 2))
+
+# ============================================
+# Simulating Random Processes
+# ============================================
+
+# Roll a die 1000 times
+die_rolls = Map(Range(1, 1001), _ -> Floor(Random() * 6) + 1)
+
+# Check the distribution (should be roughly uniform)
+Histogram(die_rolls, 6)
+
+# Mean should be close to 3.5
+Mean(die_rolls)
+
+# ============================================
+# Normal Distribution Sampling
+# ============================================
+
+# Generate approximately normal data using Central Limit Theorem
+# Sum of 12 uniform random values, shifted and scaled
+normal_sample() = Sum(Map(Range(1, 13), _ -> Random())) - 6
+
+normal_data = Map(Range(1, 501), _ -> normal_sample())
+
+Mean(normal_data)    # Should be close to 0
+StdDev(normal_data)  # Should be close to 1
+
+Histogram(normal_data, 20)
+
+# ============================================
+# Comparing Datasets
+# ============================================
+
+group_a = List(78, 82, 85, 79, 88, 91, 77, 84)
+group_b = List(85, 89, 92, 88, 95, 87, 90, 93)
+
+Mean(group_a)
+Mean(group_b)
+
+StdDev(group_a)
+StdDev(group_b)
+
+# Difference in means
+Mean(group_b) - Mean(group_a)

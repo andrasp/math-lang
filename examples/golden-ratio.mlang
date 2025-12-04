@@ -1,0 +1,97 @@
+# Golden Ratio Exploration
+# The golden ratio phi appears throughout mathematics and nature
+
+# The golden ratio constant
+phi = [[PHI]]
+phi
+
+# Phi has a beautiful property: phi^2 = phi + 1
+phi^2
+phi + 1
+
+# And its reciprocal: 1/phi = phi - 1
+1/phi
+phi - 1
+
+# ============================================
+# Fibonacci and the Golden Ratio
+# ============================================
+
+# The ratio of consecutive Fibonacci numbers converges to phi
+fib(n) = If(n <= 1, n, fib(n-1) + fib(n-2))
+
+# Let's see the convergence
+fib(10) / fib(9)
+fib(15) / fib(14)
+fib(20) / fib(19)
+
+# Generate Fibonacci sequence and compute ratios
+fibs = FibonacciList(15)
+fibs
+
+# ============================================
+# Golden Rectangle
+# ============================================
+
+# A golden rectangle has sides in ratio phi:1
+# If you cut off a square, the remaining rectangle is also golden
+
+width = phi
+height = 1
+
+# Original ratio
+width / height
+
+# After cutting a 1x1 square, remaining rectangle is (phi-1) x 1
+# But phi - 1 = 1/phi, so the ratio of the remaining piece is:
+remaining_width = phi - 1
+remaining_height = 1
+remaining_height / remaining_width  # This equals phi!
+
+# ============================================
+# Golden Angle
+# ============================================
+
+# The golden angle divides a circle in the golden ratio
+# Used in nature for optimal packing (sunflower seeds, pinecones)
+golden_angle_rad = 2 * [[PI]] / (phi^2)
+golden_angle_deg = ToDegrees(golden_angle_rad)
+golden_angle_deg  # Approximately 137.5 degrees
+
+# ============================================
+# Phi in Geometry: Pentagon
+# ============================================
+
+# In a regular pentagon, the diagonal to side ratio is phi
+# Side length 1, diagonal length phi
+pentagon_side = 1
+pentagon_diagonal = phi
+pentagon_diagonal / pentagon_side
+
+# ============================================
+# Continued Fraction Representation
+# ============================================
+
+# Phi is the "most irrational" number - its continued fraction is all 1s
+# phi = 1 + 1/(1 + 1/(1 + 1/(1 + ...)))
+
+# Approximating phi with nested fractions
+approx1 = 1 + 1/1
+approx2 = 1 + 1/(1 + 1/1)
+approx3 = 1 + 1/(1 + 1/(1 + 1/1))
+approx4 = 1 + 1/(1 + 1/(1 + 1/(1 + 1/1)))
+approx5 = 1 + 1/(1 + 1/(1 + 1/(1 + 1/(1 + 1/1))))
+
+approx1
+approx2
+approx3
+approx4
+approx5
+phi  # Compare to actual value
+
+# ============================================
+# Visualizing phi-related functions
+# ============================================
+
+# A spiral-like function based on golden ratio
+Plot(x -> Exp(x / (2 * [[PI]]) * Log(phi)) * Sin(x), 0, 4 * [[PI]])

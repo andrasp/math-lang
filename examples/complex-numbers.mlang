@@ -1,0 +1,142 @@
+# Complex Numbers
+# Exploring the complex plane with MathLang
+
+# ============================================
+# Complex Number Basics
+# ============================================
+
+# Creating complex numbers
+z1 = 3 + 4i
+z2 = 1 - 2i
+z3 = 2i       # Pure imaginary
+z4 = 5        # Real numbers work too
+
+z1
+z2
+
+# ============================================
+# Basic Arithmetic
+# ============================================
+
+# Addition and subtraction
+z1 + z2
+z1 - z2
+
+# Multiplication
+z1 * z2
+# (3+4i)(1-2i) = 3 - 6i + 4i - 8i^2 = 3 - 2i + 8 = 11 + 2i
+
+# Division
+z1 / z2
+
+# Powers
+z1^2
+(1 + 1i)^4
+
+# ============================================
+# Complex Properties
+# ============================================
+
+z = 3 + 4i
+
+# Absolute value (modulus): |z| = sqrt(a^2 + b^2)
+Abs(z)  # sqrt(9 + 16) = 5
+
+# This forms a 3-4-5 right triangle!
+Sqrt(3^2 + 4^2)
+
+# ============================================
+# Euler's Formula
+# ============================================
+
+# e^(i*theta) = cos(theta) + i*sin(theta)
+# This is one of the most beautiful equations in math
+
+theta = [[PI]] / 4  # 45 degrees
+Exp(1i * theta)
+Cos(theta) + 1i * Sin(theta)  # Same result
+
+# Euler's identity: e^(i*pi) + 1 = 0
+Exp(1i * [[PI]]) + 1  # Should be 0 (or very close)
+
+# ============================================
+# Roots of Unity
+# ============================================
+
+# The n-th roots of unity are equally spaced on the unit circle
+# They satisfy z^n = 1
+
+# Square roots of 1: z^2 = 1
+1^(1/2)   # 1
+(-1)      # -1 is the other root
+
+# Cube roots of 1: z^3 = 1
+# One is 1, the others are complex
+omega = Exp(2i * [[PI]] / 3)  # Primitive cube root
+omega
+omega^2
+omega^3  # Should equal 1
+
+# Fourth roots of 1
+Exp(0i * [[PI]] / 2)    # 1
+Exp(1i * [[PI]] / 2)    # i
+Exp(2i * [[PI]] / 2)    # -1
+Exp(3i * [[PI]] / 2)    # -i
+
+# ============================================
+# Complex Functions
+# ============================================
+
+# Trigonometric functions work with complex numbers
+Sin(1i)
+Cos(1i)
+
+# Hyperbolic connection: sin(ix) = i*sinh(x)
+Sin(1i)
+1i * Sinh(1)  # Same!
+
+# Square root of negative numbers
+Sqrt(-1)  # i
+Sqrt(-4)  # 2i
+
+# ============================================
+# Complex Magnitudes
+# ============================================
+
+# Points on the unit circle (|z| = 1)
+Abs(Exp(1i * [[PI]] / 6))
+Abs(Cos([[PI]]/3) + 1i * Sin([[PI]]/3))
+
+# All have magnitude 1
+Abs(1 + 0i)
+Abs(0 + 1i)
+Abs(-1 + 0i)
+Abs(Sqrt(2)/2 + Sqrt(2)/2 * 1i)
+
+# ============================================
+# De Moivre's Theorem
+# ============================================
+
+# (cos(theta) + i*sin(theta))^n = cos(n*theta) + i*sin(n*theta)
+
+theta = [[PI]] / 6
+n = 3
+
+# Left side
+(Cos(theta) + 1i * Sin(theta))^n
+
+# Right side
+Cos(n * theta) + 1i * Sin(n * theta)
+
+# ============================================
+# Visualizing Complex Functions
+# ============================================
+
+# Plot the real part of e^(ix)
+Plot(x -> Cos(x), 0, 2 * [[PI]])
+
+# Plot the imaginary part of e^(ix)
+Plot(x -> Sin(x), 0, 2 * [[PI]])
+
+# Magnitude of (1 + 0.1*x*i)
+Plot(x -> Abs(1 + 0.1 * x * 1i), -10, 10)

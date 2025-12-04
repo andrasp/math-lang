@@ -1,0 +1,173 @@
+# Sequences and Series
+# Exploring convergence and famous mathematical series
+
+# ============================================
+# Arithmetic Sequences
+# ============================================
+
+# a_n = a_1 + (n-1)*d
+first_term = 3
+common_diff = 5
+
+arithmetic(n) = first_term + (n - 1) * common_diff
+
+# First 10 terms
+Map(Range(1, 11), arithmetic)
+
+# Sum of arithmetic sequence: n/2 * (first + last)
+n = 10
+last_term = arithmetic(n)
+sum_arithmetic = n / 2 * (first_term + last_term)
+sum_arithmetic
+
+# Verify
+Sum(Map(Range(1, 11), arithmetic))
+
+# ============================================
+# Geometric Sequences
+# ============================================
+
+# a_n = a_1 * r^(n-1)
+a1 = 2
+ratio = 3
+
+geometric(n) = a1 * ratio^(n - 1)
+
+# First 8 terms
+Map(Range(1, 9), geometric)
+
+# Sum of finite geometric series: a1 * (1 - r^n) / (1 - r)
+n = 8
+sum_geometric = a1 * (1 - ratio^n) / (1 - ratio)
+sum_geometric
+
+# Verify
+Sum(Map(Range(1, 9), geometric))
+
+# ============================================
+# Infinite Geometric Series (|r| < 1)
+# ============================================
+
+# Sum = a1 / (1 - r) when |r| < 1
+a1 = 1
+r = 0.5
+
+# Theoretical sum
+infinite_sum = a1 / (1 - r)
+infinite_sum  # Should be 2
+
+# Partial sums converging to 2
+Sum(Map(Range(0, 11), n -> 1 * 0.5^n))
+Sum(Map(Range(0, 21), n -> 1 * 0.5^n))
+Sum(Map(Range(0, 31), n -> 1 * 0.5^n))
+
+# ============================================
+# Approximating Pi
+# ============================================
+
+# Leibniz formula: pi/4 = 1 - 1/3 + 1/5 - 1/7 + ...
+leibniz_term(n) = (-1)^n / (2*n + 1)
+
+# Partial sums (converges slowly)
+pi_approx_10 = 4 * Sum(Map(Range(0, 11), leibniz_term))
+pi_approx_100 = 4 * Sum(Map(Range(0, 101), leibniz_term))
+pi_approx_1000 = 4 * Sum(Map(Range(0, 1001), leibniz_term))
+
+pi_approx_10
+pi_approx_100
+pi_approx_1000
+[[PI]]  # Actual value
+
+# ============================================
+# Approximating e
+# ============================================
+
+# e = sum of 1/n! for n = 0, 1, 2, ...
+e_term(n) = 1 / Factorial(n)
+
+# Partial sums (converges quickly!)
+e_approx_5 = Sum(Map(Range(0, 6), e_term))
+e_approx_10 = Sum(Map(Range(0, 11), e_term))
+e_approx_15 = Sum(Map(Range(0, 16), e_term))
+
+e_approx_5
+e_approx_10
+e_approx_15
+[[E]]  # Actual value
+
+# ============================================
+# Harmonic Series
+# ============================================
+
+# H_n = 1 + 1/2 + 1/3 + ... + 1/n
+# Diverges, but slowly
+
+harmonic(n) = Sum(Map(Range(1, n + 1), k -> 1/k))
+
+harmonic(10)
+harmonic(100)
+harmonic(1000)
+
+# Grows like ln(n) + gamma (Euler-Mascheroni constant ~ 0.5772)
+Log(10) + 0.5772
+Log(100) + 0.5772
+Log(1000) + 0.5772
+
+# ============================================
+# Basel Problem
+# ============================================
+
+# Sum of 1/n^2 = pi^2/6 (Euler, 1735)
+basel_partial(n) = Sum(Map(Range(1, n + 1), k -> 1/k^2))
+
+basel_partial(10)
+basel_partial(100)
+basel_partial(1000)
+[[PI]]^2 / 6  # Exact answer
+
+# ============================================
+# Fibonacci Ratios
+# ============================================
+
+# Ratio of consecutive Fibonacci numbers converges to phi
+fib_ratios = Map(Range(2, 16), n -> Fibonacci(n) / Fibonacci(n - 1))
+fib_ratios
+
+[[PHI]]  # Converges to golden ratio
+
+# ============================================
+# Convergence Visualization
+# ============================================
+
+# Plot partial sums of 1/2^n approaching 2
+partial_sum(n) = Sum(Map(Range(0, n + 1), k -> 1 / 2^k))
+Plot(n -> partial_sum(Floor(n)), 0, 15)
+
+# ============================================
+# Taylor Series for sin(x)
+# ============================================
+
+# sin(x) = x - x^3/3! + x^5/5! - x^7/7! + ...
+sin_term(x, n) = (-1)^n * x^(2*n + 1) / Factorial(2*n + 1)
+
+# Approximate sin(pi/4) using Taylor series
+x = [[PI]] / 4
+sin_approx_3 = Sum(Map(Range(0, 4), n -> sin_term(x, n)))
+sin_approx_5 = Sum(Map(Range(0, 6), n -> sin_term(x, n)))
+
+sin_approx_3
+sin_approx_5
+Sin(x)  # Actual value
+
+# ============================================
+# Taylor Series for cos(x)
+# ============================================
+
+# cos(x) = 1 - x^2/2! + x^4/4! - x^6/6! + ...
+cos_term(x, n) = (-1)^n * x^(2*n) / Factorial(2*n)
+
+x = [[PI]] / 3
+cos_approx = Sum(Map(Range(0, 8), n -> cos_term(x, n)))
+
+cos_approx
+Cos(x)  # Actual value

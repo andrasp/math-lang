@@ -53,6 +53,8 @@ area = [[PI]] * r^2
 golden = (1 + Sqrt(5)) / 2  # same as [[PHI]]
 ```
 
+See [examples](examples/) for more mathematical exploration.
+
 ## Features
 
 **Language**
